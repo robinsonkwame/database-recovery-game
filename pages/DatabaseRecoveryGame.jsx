@@ -253,6 +253,8 @@ export default function DatabaseRecoveryGame() {
   const [showOutcome, setShowOutcome] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [completionTime, setCompletionTime] = useState(null);
+  const [startTime] = useState(new Date().getTime());
 
   useEffect(() => {
     const shuffledScenarios = [...initialScenarios].sort(() => Math.random() - 0.5);
@@ -285,6 +287,7 @@ export default function DatabaseRecoveryGame() {
       setShowOutcome(false);
       setSelectedOption(null);
     } else {
+      setCompletionTime(new Date().getTime());
       setGameOver(true);
     }
   };
@@ -323,6 +326,34 @@ export default function DatabaseRecoveryGame() {
     }
   };
 
+  const generateCompletionCode = (finalScore, completionTime) => {
+    // Simple encoding: score (0-10) + time hash (2 chars) + checksum (3 chars)
+    // Score: A-K (A=0, B=1, C=2, ... K=10)
+    const scoreChar = String.fromCharCode(65 + finalScore); // A-K
+    
+    // Time hash: Use last 4 digits of timestamp, convert to base36, take first 2 chars
+    const timeHash = (completionTime % 10000).toString(36).toUpperCase().padStart(2, '0').slice(0, 2);
+    
+    // Checksum: Simple hash of score and time for verification
+    const checksumSeed = finalScore * 7 + (completionTime % 1000);
+    const checksum = checksumSeed.toString(36).toUpperCase().padStart(3, '0').slice(-3);
+    
+    return `${scoreChar}${timeHash}${checksum}`;
+  };
+
+  const decodeCompletionCode = (code) => {
+    if (!code || code.length !== 6) return null;
+    
+    const scoreChar = code[0];
+    const timeHash = code.slice(1, 3);
+    const checksum = code.slice(3, 6);
+    
+    const score = scoreChar.charCodeAt(0) - 65;
+    const timeValue = parseInt(timeHash, 36);
+    
+    return { score, timeHash: timeValue, checksum };
+  };
+
   const restartGame = () => {
     const shuffledScenarios = [...initialScenarios].sort(() => Math.random() - 0.5);
     setScenarios(shuffledScenarios);
@@ -331,6 +362,7 @@ export default function DatabaseRecoveryGame() {
     setShowOutcome(false);
     setSelectedOption(null);
     setGameOver(false);
+    setCompletionTime(null);
   };
 
   if (scenarios.length === 0) {
@@ -396,15 +428,40 @@ export default function DatabaseRecoveryGame() {
         </Card>
       ) : (
         <AlertDialog open={gameOver}>
-          <AlertDialogContent className="bg-white p-4 rounded-lg shadow-lg">
+          <AlertDialogContent className="bg-white p-6 rounded-lg shadow-lg max-w-md">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-blue-600">Game Over!</AlertDialogTitle>
-              <AlertDialogDescription>
-                You&apos;ve completed all scenarios. Your final score is {score} out of {scenarios.length}.
-                {getPerformanceSummary(score)}
+              <AlertDialogTitle className="text-blue-600 text-center">Scenarios Complete! 🎉</AlertDialogTitle>
+              <AlertDialogDescription className="text-center">
+                <div className="space-y-4">
+                  <p>Your final score: <span className="font-bold text-lg">{score} out of {scenarios.length}</span></p>
+                  <p className="text-sm text-gray-600">{getPerformanceSummary(score)}</p>
+                  
+                  {completionTime && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <p className="font-semibold text-green-800 mb-2">📋 Completion Code for Canvas:</p>
+                      <div className="bg-white border-2 border-green-300 rounded p-3 font-mono text-xl text-center font-bold text-green-700">
+                        {generateCompletionCode(score, completionTime)}
+                      </div>
+                      <p className="text-xs text-green-600 mt-2">
+                        Copy this code and submit it with your team information on Canvas
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="pt-2">
+                    <a 
+                      href="https://canvas.wayne.edu/courses/228219/assignments/2184480"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                    >
+                      📚 Submit on Canvas Assignment
+                    </a>
+                  </div>
+                </div>
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter>
+            <AlertDialogFooter className="justify-center">
               <AlertDialogAction onClick={restartGame} className="bg-blue-500 text-white hover:bg-blue-700">Play Again</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
