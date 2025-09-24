@@ -327,14 +327,18 @@ export default function DatabaseRecoveryGame() {
       <p className="mb-4 text-center text-lg">Scenario {currentScenario + 1} of {scenarios.length}</p>
       <div className="mb-4 p-4 bg-white rounded-lg shadow-md">
         <h2 className="text-xl font-semibold text-blue-500">Database Recovery Concepts:</h2>
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div>
-            <p><strong>Rollback Recovery:</strong> Backs out or undoes effects of an uncompleted transaction resulting from a system error or failure.</p>
-            <p className="text-sm text-gray-600 ml-4">• Ensures data consistency even if failures occur</p>
+            <p><strong>Rollback Recovery:</strong> Used when a transaction was interrupted before it could complete and commit. The system failure occurred while the transaction was still in progress.</p>
+            <p className="text-sm text-gray-600 ml-4">• Undoes partial changes to restore the database to its state before the failed transaction began</p>
           </div>
           <div>
-            <p><strong>Commit Recovery:</strong> Reapplies changes made by a completed transaction that has been saved to the database.</p>
-            <p className="text-sm text-gray-600 ml-4">• Ensures successful transactions are permanently recorded</p>
+            <p><strong>Commit Recovery:</strong> Used when a transaction successfully completed and committed, but a system failure occurred after the commit but before all changes were fully written to permanent storage.</p>
+            <p className="text-sm text-gray-600 ml-4">• Reapplies these changes to ensure committed transactions aren&apos;t lost</p>
+          </div>
+          <div className="mt-3 p-2 bg-blue-50 rounded">
+            <p className="text-sm font-medium text-blue-800">Key Timing Difference:</p>
+            <p className="text-sm text-blue-700">Rollback = failure during an incomplete transaction | Commit recovery = failure after a complete transaction but before full persistence</p>
           </div>
         </div>
       </div>
