@@ -315,7 +315,7 @@ export default function DatabaseRecoveryGame() {
     if (percentage >= 80) {
       return `Strong performance so far: ${correctAnswers}/${totalAnswers} optimal decisions (${percentage}%). Your database management approach is showing excellent judgment.`;
     } else if (percentage >= 60) {
-      return `Good progress: ${correctAnswers}/${totalAnswers} correct decisions (${percentage}%). You&apos;re making solid choices with room for improvement.`;
+      return `Good progress: ${correctAnswers}/${totalAnswers} correct decisions (${percentage}%). You're making solid choices with room for improvement.`;
     } else if (percentage >= 40) {
       return `Mixed results: ${correctAnswers}/${totalAnswers} optimal decisions (${percentage}%). Consider the context more carefully - timing and impact matter.`;
     } else {
