@@ -19,7 +19,7 @@ const initialScenarios = [
       { 
         text: "Commit", 
         outcome: "The error persists, affecting the accuracy of the book status.", 
-        score: -1,
+        score: 0,
         feedback: "A commit here allows the error to persist. For small errors in mostly read-only databases, rollback is usually better."
       }
     ],
@@ -37,7 +37,7 @@ const initialScenarios = [
       { 
         text: "Rollback", 
         outcome: "You maintain data accuracy but cause registration delays.", 
-        score: -1,
+        score: 0,
         feedback: "While this maintains accuracy, it might not be the best choice during high-traffic periods. Consider the impact on user experience."
       },
       { 
@@ -67,7 +67,7 @@ const initialScenarios = [
       { 
         text: "Commit", 
         outcome: "The erroneous metadata remains, potentially affecting research discoverability.", 
-        score: -1,
+        score: 0,
         feedback: "While this avoids delays, incorrect metadata can significantly impact research discoverability. For crucial data, accuracy often outweighs speed."
       }
     ],
@@ -85,7 +85,7 @@ const initialScenarios = [
       { 
         text: "Rollback", 
         outcome: "You remove potentially erroneous entries, risking the loss of valid security data.", 
-        score: -1,
+        score: 0,
         feedback: "Caution is good, but rolling back security logs could lose crucial data. It's often better to keep all entries and verify later."
       },
       { 
@@ -115,7 +115,7 @@ const initialScenarios = [
       { 
         text: "Commit", 
         outcome: "All disbursements are processed quickly, but some may be incorrect.", 
-        score: -1,
+        score: 0,
         feedback: "Speed is good, but not at the cost of financial accuracy. For financial transactions, it's usually better to ensure accuracy even if it causes some delay."
       }
     ],
@@ -133,7 +133,7 @@ const initialScenarios = [
       { 
         text: "Rollback", 
         outcome: "You reset all exams to their pre-outage state, requiring students to retake parts of the exam.", 
-        score: -1,
+        score: 0,
         feedback: "While this ensures fairness, it can cause significant stress for students and administrative burden."
       },
       { 
@@ -157,7 +157,7 @@ const initialScenarios = [
       { 
         text: "Rollback", 
         outcome: "You reverse all recent transactions to ensure no errors, but this may upset some donors.", 
-        score: -1,
+        score: 0,
         feedback: "While thorough, this approach might damage relationships with donors. It's often better to verify first before taking drastic actions."
       },
       { 
@@ -181,7 +181,7 @@ const initialScenarios = [
       { 
         text: "Rollback", 
         outcome: "You revert to the previous version of the system, losing some recent but uncorrupted updates.", 
-        score: -1,
+        score: 0,
         feedback: "While this ensures data integrity, it also loses valid recent updates. For health records, a more targeted approach is often better."
       },
       { 
@@ -205,7 +205,7 @@ const initialScenarios = [
       { 
         text: "Rollback", 
         outcome: "You reset the logs to the last known good state, potentially losing some valid usage data.", 
-        score: -1,
+        score: 0,
         feedback: "This approach might lose important data. For usage logs, it's often better to keep the data for analysis rather than discard it."
       },
       { 
@@ -229,7 +229,7 @@ const initialScenarios = [
       { 
         text: "Rollback", 
         outcome: "You revert to the last known good state, potentially losing some recent maintenance requests.", 
-        score: -1,
+        score: 0,
         feedback: "While this ensures system consistency, it may result in missed maintenance requests, potentially causing issues."
       },
       { 
@@ -262,7 +262,7 @@ export default function DatabaseRecoveryGame() {
   const handleAnswer = (option) => {
     setSelectedOption(option);
     setShowOutcome(true);
-    setScore(prevScore => Math.max(-10, Math.min(10, prevScore + option.score)));
+    setScore(prevScore => Math.max(0, Math.min(10, prevScore + option.score)));
   };
 
   const nextScenario = () => {
@@ -293,14 +293,14 @@ export default function DatabaseRecoveryGame() {
   };
 
   const getPerformanceSummary = (score) => {
-    if (score <= -10) {
-      return "Poor performance: Mismatched commits and rollbacks have led to significant delays and incoherent data.";
-    } else if (score <= -5) {
-      return "Below average performance: Some decisions have caused delays and data inconsistencies.";
-    } else if (score <= 0) {
-      return "Average performance: The system is operating with some delays and minor data issues.";
-    } else if (score <= 5) {
-      return "Good performance: The right combination of commits and rollbacks has led to a mostly smooth operation.";
+    if (score <= 2) {
+      return "Poor performance: Most decisions were incorrect, leading to significant system issues and data problems.";
+    } else if (score <= 4) {
+      return "Below average performance: Several incorrect decisions have caused delays and data inconsistencies.";
+    } else if (score <= 6) {
+      return "Average performance: Mixed results with some correct and incorrect decisions affecting system operation.";
+    } else if (score <= 8) {
+      return "Good performance: Most decisions were correct, leading to smooth operation with minimal issues.";
     } else {
       return "Excellent performance: Optimal decisions have ensured the system operates as expected, especially in critical data areas.";
     }
@@ -366,7 +366,7 @@ export default function DatabaseRecoveryGame() {
             <AlertDialogHeader>
               <AlertDialogTitle className="text-blue-600">Game Over!</AlertDialogTitle>
               <AlertDialogDescription>
-                You've completed all scenarios. Your final score is {score} (range: -10 to 10).
+                You&apos;ve completed all scenarios. Your final score is {score} out of {scenarios.length}.
                 {getPerformanceSummary(score)}
               </AlertDialogDescription>
             </AlertDialogHeader>
