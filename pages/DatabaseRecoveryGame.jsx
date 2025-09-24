@@ -274,10 +274,7 @@ export default function DatabaseRecoveryGame() {
         const updatedScenarios = [...prevScenarios];
         const nextScenario = { ...updatedScenarios[nextScenarioIndex] };
 
-        const performanceSummary = getPerformanceSummary(score);
-
-        nextScenario.description += ` ${performanceSummary}`;
-
+        // Shuffle options for variety
         nextScenario.options.sort(() => Math.random() - 0.5);
 
         updatedScenarios[nextScenarioIndex] = nextScenario;
@@ -306,6 +303,26 @@ export default function DatabaseRecoveryGame() {
     }
   };
 
+  const getContextualSummary = (score, scenarioNumber) => {
+    if (scenarioNumber === 0) {
+      return null; // No summary for the first scenario
+    }
+    
+    const correctAnswers = score;
+    const totalAnswers = scenarioNumber;
+    const percentage = Math.round((correctAnswers / totalAnswers) * 100);
+    
+    if (percentage >= 80) {
+      return `Strong performance so far: ${correctAnswers}/${totalAnswers} optimal decisions (${percentage}%). Your database management approach is showing excellent judgment.`;
+    } else if (percentage >= 60) {
+      return `Good progress: ${correctAnswers}/${totalAnswers} correct decisions (${percentage}%). You&apos;re making solid choices with room for improvement.`;
+    } else if (percentage >= 40) {
+      return `Mixed results: ${correctAnswers}/${totalAnswers} optimal decisions (${percentage}%). Consider the context more carefully - timing and impact matter.`;
+    } else {
+      return `Challenging start: ${correctAnswers}/${totalAnswers} correct decisions (${percentage}%). Focus on balancing data integrity with operational needs.`;
+    }
+  };
+
   const restartGame = () => {
     const shuffledScenarios = [...initialScenarios].sort(() => Math.random() - 0.5);
     setScenarios(shuffledScenarios);
@@ -324,7 +341,12 @@ export default function DatabaseRecoveryGame() {
     <div className="container mx-auto p-4 bg-gray-100 rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold mb-4 text-center text-blue-600">Enhanced Database Recovery Concepts Game</h1>
       <p className="mb-4 text-center text-lg">Current Score: {score}</p>
-      <p className="mb-4 text-center text-lg">Scenario {currentScenario + 1} of {scenarios.length}</p>
+      <p className="mb-2 text-center text-lg">Scenario {currentScenario + 1} of {scenarios.length}</p>
+      {getContextualSummary(score, currentScenario) && (
+        <p className="mb-4 text-center text-sm italic text-gray-700 bg-gray-50 p-2 rounded">
+          {getContextualSummary(score, currentScenario)}
+        </p>
+      )}
       <div className="mb-4 p-4 bg-white rounded-lg shadow-md">
         <h2 className="text-xl font-semibold text-blue-500">Database Recovery Concepts:</h2>
         <div className="space-y-3">
