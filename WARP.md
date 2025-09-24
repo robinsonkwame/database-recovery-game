@@ -26,7 +26,7 @@ The game uses a sophisticated scenario system where:
 - Each scenario has branching outcomes based on player choices
 - Previous decisions affect subsequent scenario descriptions through `nextScenarioModifiers`
 - Dynamic performance summaries are injected into future scenarios
-- Score ranges from -10 to 10 with contextual feedback
+- Score ranges from 0 to 10 (1 point for correct answers, 0 points for incorrect)
 
 ## Development Commands
 
@@ -61,7 +61,7 @@ The project uses shadcn/ui components configured in `components.json`:
 
 ## Key Files
 
-- `pages/DatabaseRecoveryGame.jsx`: Contains all game scenarios (247 lines) - this is the core game logic
+- `pages/DatabaseRecoveryGame.jsx`: Contains all game scenarios (392 lines) - this is the core game logic
 - `tailwind.config.js`: Tailwind configuration with custom color system
 - `jsconfig.json`: Path aliases configuration for `@/` imports
 
@@ -72,3 +72,13 @@ When modifying game scenarios:
 - Options have `text`, `outcome`, `score`, and `feedback` properties  
 - The `nextScenarioModifiers` system affects how future scenarios are presented
 - Scenarios are shuffled on game start for replayability
+
+## Linting Notes
+
+**Apostrophe Handling**: ESLint requires apostrophes in JSX text to be escaped to avoid React warnings. Replace `'` with `&apos;` in all text content:
+- ❌ `"You've completed all scenarios"`
+- ✅ `"You&apos;ve completed all scenarios"`
+- ❌ `"transactions aren't lost"`  
+- ✅ `"transactions aren&apos;t lost"`
+
+This applies to all text in scenario descriptions, feedback messages, outcomes, and UI labels.
