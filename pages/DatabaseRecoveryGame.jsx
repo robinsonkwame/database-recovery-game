@@ -7,20 +7,20 @@ const initialScenarios = [
   {
     id: 1,
     title: "University Library System",
-    description: "You're managing the university's library database. A small error occurred while updating the status of several books.",
+    description: "You're managing the university's library database during the busy start of semester. A small error occurred while updating the status of several popular textbooks, and students are already lining up to check them out.",
     question: "What recovery method would you use?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You successfully undo the error, but it delays the system update.", 
         score: 1,
-        feedback: "Good choice. For a small error in a largely read-only database, rollback is often the safest option."
+        feedback: "Exactly right. When book status updates go wrong, it's better to roll back and fix the data properly than leave incorrect records."
       },
       { 
         text: "Commit", 
         outcome: "The error persists, affecting the accuracy of the book status.", 
         score: 0,
-        feedback: "A commit here allows the error to persist. For small errors in mostly read-only databases, rollback is usually better."
+        feedback: "Not ideal. Students and staff rely on accurate book availability - committing flawed data means wrong information in the catalog."
       }
     ],
     nextScenarioModifiers: {
@@ -31,20 +31,20 @@ const initialScenarios = [
   {
     id: 2,
     title: "Student Registration System",
-    description: "It's time for course registration. The system is experiencing high traffic.",
+    description: "It's 8 AM on course registration day and thousands of students are frantically trying to get into their required classes. The system is experiencing heavy load with some minor data inconsistencies appearing.",
     question: "Which recovery method is more suitable?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You maintain data accuracy but cause registration delays.", 
         score: 0,
-        feedback: "While this maintains accuracy, it might not be the best choice during high-traffic periods. Consider the impact on user experience."
+        feedback: "Think about timing - rolling back during peak registration creates massive delays when students are all trying to enroll at once."
       },
       { 
         text: "Commit", 
         outcome: "Registration proceeds quickly but with some data inconsistencies.", 
         score: 1,
-        feedback: "Good choice. In high-traffic scenarios, maintaining system availability is often prioritized. You can address inconsistencies later."
+        feedback: "Smart move. Registration deadlines wait for no one - keep the system running and clean up the data inconsistencies afterwards."
       }
     ],
     nextScenarioModifiers: {
@@ -55,20 +55,20 @@ const initialScenarios = [
   {
     id: 3,
     title: "Research Data Repository",
-    description: "A professor's research data has been uploaded to the university's repository.",
+    description: "A renowned professor has just uploaded years of groundbreaking climate research to the university's repository. However, there's a small metadata error that could affect how other researchers discover this important work.",
     question: "What's the best recovery approach for a small error in the metadata?",
     options: [
       { 
         text: "Rollback", 
         outcome: "The metadata is corrected, but it delays other uploads.", 
         score: 1,
-        feedback: "Good choice. For research data, accuracy is crucial. The small delay is worth ensuring correct metadata."
+        feedback: "Absolutely. Research metadata errors can make important work unfindable for years - a few minutes of delay beats that outcome."
       },
       { 
         text: "Commit", 
         outcome: "The erroneous metadata remains, potentially affecting research discoverability.", 
         score: 0,
-        feedback: "While this avoids delays, incorrect metadata can significantly impact research discoverability. For crucial data, accuracy often outweighs speed."
+        feedback: "Risky choice. Imagine a groundbreaking paper becoming invisible in search results because of bad metadata - that's worse than a brief delay."
       }
     ],
     nextScenarioModifiers: {
@@ -79,20 +79,20 @@ const initialScenarios = [
   {
     id: 4,
     title: "Campus Security Logs",
-    description: "The campus security system has logged an unusual number of entries.",
+    description: "It's 2 AM and the campus security system has suddenly logged an unusual surge of access card entries across multiple buildings. The night security team is unsure if this indicates a real security event or a system malfunction.",
     question: "How would you handle potential errors in the security logs?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You remove potentially erroneous entries, risking the loss of valid security data.", 
         score: 0,
-        feedback: "Caution is good, but rolling back security logs could lose crucial data. It's often better to keep all entries and verify later."
+        feedback: "Too aggressive. What if those 'unusual entries' were actually recording a real security incident? You'd be deleting evidence."
       },
       { 
         text: "Commit", 
         outcome: "All entries are kept, requiring manual verification later.", 
         score: 1,
-        feedback: "Good choice. In security scenarios, it's often better to keep all data and verify later, rather than risk losing important information."
+        feedback: "Wise approach. Security logs are like a crime scene - preserve everything first, analyze later. Better safe than sorry."
       }
     ],
     nextScenarioModifiers: {
@@ -103,20 +103,20 @@ const initialScenarios = [
   {
     id: 5,
     title: "Financial Aid Disbursement",
-    description: "It's time to disburse financial aid to students. The previous decisions have affected system performance and data accuracy.",
+    description: "It's the week before tuition deadlines and thousands of students are depending on their financial aid disbursements. The system needs to process millions of dollars, but your previous decisions have created some performance and accuracy concerns.",
     question: "Given the current system state, what recovery strategy would you employ?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You ensure accurate disbursements but may delay some payments.", 
         score: 1,
-        feedback: "Good choice. In financial transactions, accuracy is paramount. Slight delays are preferable to incorrect disbursements."
+        feedback: "Perfect. Financial aid mistakes can devastate students' lives - taking time to ensure accuracy protects their futures."
       },
       { 
         text: "Commit", 
         outcome: "All disbursements are processed quickly, but some may be incorrect.", 
         score: 0,
-        feedback: "Speed is good, but not at the cost of financial accuracy. For financial transactions, it's usually better to ensure accuracy even if it causes some delay."
+        feedback: "Dangerous territory. Sending wrong amounts could mean some students can't pay tuition while others get money they shouldn't have."
       }
     ],
     nextScenarioModifiers: {
@@ -127,20 +127,20 @@ const initialScenarios = [
   {
     id: 6,
     title: "Online Exam Platform",
-    description: "During a university-wide online exam, the system experiences a brief outage.",
+    description: "It's finals week and 5,000 students are simultaneously taking their comprehensive online exams. Suddenly, the system experiences a brief but critical 3-minute outage, leaving many students mid-answer.",
     question: "How do you handle the partial exam submissions?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You reset all exams to their pre-outage state, requiring students to retake parts of the exam.", 
         score: 0,
-        feedback: "While this ensures fairness, it can cause significant stress for students and administrative burden."
+        feedback: "Ouch. Imagine telling hundreds of stressed students they have to restart their exam because of a technical glitch - not great for morale."
       },
       { 
         text: "Commit", 
         outcome: "You save all partial submissions and allow students to continue from where they left off.", 
         score: 1,
-        feedback: "Good choice. This minimizes disruption and stress for students, though it may require some manual verification later."
+        feedback: "Compassionate choice. Students' work deserves protection, and you can always verify suspicious submissions manually later."
       }
     ],
     nextScenarioModifiers: {
@@ -151,20 +151,20 @@ const initialScenarios = [
   {
     id: 7,
     title: "Alumni Donation System",
-    description: "The alumni donation system has processed several large donations, but there's suspicion of a processing error.",
+    description: "The university's annual fundraising gala was a huge success, with the alumni donation system processing several six-figure gifts throughout the evening. However, the development office suspects there may have been a processing error with some of the transactions.",
     question: "How do you approach this situation?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You reverse all recent transactions to ensure no errors, but this may upset some donors.", 
         score: 0,
-        feedback: "While thorough, this approach might damage relationships with donors. It's often better to verify first before taking drastic actions."
+        feedback: "Heavy-handed approach. Donors who just made generous gifts might feel insulted if you immediately reverse their contributions."
       },
       { 
         text: "Commit", 
         outcome: "You keep all transactions and initiate a review process, potentially allowing erroneous transactions to stand temporarily.", 
         score: 1,
-        feedback: "Good choice. This maintains donor trust while still addressing the issue. Any errors can be corrected after verification."
+        feedback: "Diplomatic move. Keep donors happy while you investigate quietly - you can always make corrections once you know what's wrong."
       }
     ],
     nextScenarioModifiers: {
@@ -175,20 +175,20 @@ const initialScenarios = [
   {
     id: 8,
     title: "Student Health Records",
-    description: "A software update to the student health system has caused some records to be flagged as potentially corrupted.",
+    description: "The campus health center just deployed a critical software update to handle the flu season rush. However, the update has flagged numerous student health records as potentially corrupted, right when students need access for medical appointments.",
     question: "What's your recovery strategy?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You revert to the previous version of the system, losing some recent but uncorrupted updates.", 
         score: 0,
-        feedback: "While this ensures data integrity, it also loses valid recent updates. For health records, a more targeted approach is often better."
+        feedback: "Too drastic. You'd be throwing away valid patient updates along with the problematic ones - like burning down the house to kill a spider."
       },
       { 
         text: "Commit", 
         outcome: "You keep the current state and initiate a manual review of flagged records.", 
         score: 1,
-        feedback: "Good choice. This preserves all data and allows for a careful, targeted review of potentially problematic records."
+        feedback: "Smart approach. Health records are too important to lose - better to preserve everything and carefully sort out what's wrong."
       }
     ],
     nextScenarioModifiers: {
@@ -199,20 +199,20 @@ const initialScenarios = [
   {
     id: 9,
     title: "Campus Wi-Fi Usage Logs",
-    description: "The campus Wi-Fi system has been logging unusually high data usage, possibly due to a recording error.",
+    description: "Campus IT has noticed that the Wi-Fi usage logs are showing data consumption levels that seem impossibly high - some dormitories appear to be using more bandwidth than entire academic buildings. This could be a recording error, or it might reveal interesting usage patterns.",
     question: "How do you handle this data anomaly?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You reset the logs to the last known good state, potentially losing some valid usage data.", 
         score: 0,
-        feedback: "This approach might lose important data. For usage logs, it's often better to keep the data for analysis rather than discard it."
+        feedback: "Hasty decision. Those 'unusual' patterns might reveal important network issues or usage trends - you'd be deleting valuable insights."
       },
       { 
         text: "Commit", 
         outcome: "You retain all logs and flag them for further investigation.", 
         score: 1,
-        feedback: "Good choice. Keeping the logs allows for thorough analysis and can help identify if there's a real issue or just a recording error."
+        feedback: "Data detective approach! Keep everything and analyze patterns - the 'errors' might actually tell an interesting story about campus usage."
       }
     ],
     nextScenarioModifiers: {
@@ -223,20 +223,20 @@ const initialScenarios = [
   {
     id: 10,
     title: "Facilities Management System",
-    description: "A power outage has caused the facilities management system to shut down unexpectedly, leaving some maintenance requests in an unknown state.",
+    description: "A sudden thunderstorm has knocked out power to the main data center, causing the facilities management system to shut down unexpectedly. When power was restored, dozens of maintenance requests submitted during the outage are in an uncertain state - some may have been lost, others partially processed.",
     question: "What recovery action do you take?",
     options: [
       { 
         text: "Rollback", 
         outcome: "You revert to the last known good state, potentially losing some recent maintenance requests.", 
         score: 0,
-        feedback: "While this ensures system consistency, it may result in missed maintenance requests, potentially causing issues."
+        feedback: "Risky move. That 'lost' maintenance request could be a broken heater in winter or a security door that won't lock properly."
       },
       { 
         text: "Commit", 
         outcome: "You recover to the point of failure and manually verify the state of recent requests.", 
         score: 1,
-        feedback: "Good choice. This approach ensures no maintenance requests are lost, even though it requires some manual work."
+        feedback: "Thorough approach. Campus maintenance can't afford to lose requests - better to double-check everything than miss a critical repair."
       }
     ],
     nextScenarioModifiers: {
@@ -326,9 +326,17 @@ export default function DatabaseRecoveryGame() {
       <p className="mb-4 text-center text-lg">Current Score: {score}</p>
       <p className="mb-4 text-center text-lg">Scenario {currentScenario + 1} of {scenarios.length}</p>
       <div className="mb-4 p-4 bg-white rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold text-blue-500">Reminder:</h2>
-        <p><strong>Rollback/Undo:</strong> Reverts the database to a previous state, undoing recent changes.</p>
-        <p><strong>Commit/Redo:</strong> Saves all changes made during the current transaction to the database.</p>
+        <h2 className="text-xl font-semibold text-blue-500">Database Recovery Concepts:</h2>
+        <div className="space-y-2">
+          <div>
+            <p><strong>Rollback Recovery:</strong> Backs out or undoes effects of an uncompleted transaction resulting from a system error or failure.</p>
+            <p className="text-sm text-gray-600 ml-4">• Ensures data consistency even if failures occur</p>
+          </div>
+          <div>
+            <p><strong>Commit Recovery:</strong> Reapplies changes made by a completed transaction that has been saved to the database.</p>
+            <p className="text-sm text-gray-600 ml-4">• Ensures successful transactions are permanently recorded</p>
+          </div>
+        </div>
       </div>
       {!gameOver ? (
         <Card className="mb-4 p-4 bg-white rounded-lg shadow-md">
